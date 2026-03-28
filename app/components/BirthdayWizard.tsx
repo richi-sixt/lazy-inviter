@@ -198,7 +198,7 @@ export default function BirthdayWizard() {
         style={{ maxWidth: 700, margin: "0 auto", position: "relative", zIndex: 1 }}
       >
         {/* HEADER */}
-        <header style={{ textAlign: "center", marginBottom: "2rem" }}>
+        <header className="no-print" style={{ textAlign: "center", marginBottom: "2rem" }}>
           <h1
             style={{
               fontFamily: theme.font,
@@ -223,7 +223,9 @@ export default function BirthdayWizard() {
           </p>
         </header>
 
-        <StepIndicator step={step} theme={theme} isDark={isDark} />
+        <div className="no-print">
+          <StepIndicator step={step} theme={theme} isDark={isDark} />
+        </div>
 
         {/* ── STEP 1: FORMULAR ── */}
         {step === 1 && (
@@ -668,6 +670,7 @@ export default function BirthdayWizard() {
         {step === 3 && displayIdeas && (
           <div className="fade-in">
             <div
+              className="no-print"
               style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}
             >
               {(
@@ -709,7 +712,7 @@ export default function BirthdayWizard() {
             </div>
 
             {activeTab === "digital" && (
-              <>
+              <div className="no-print">
                 <InvitationCard
                   form={form}
                   ideas={displayIdeas}
@@ -717,7 +720,7 @@ export default function BirthdayWizard() {
                   formatDate={formatDate}
                   isDark={isDark}
                 />
-              </>
+              </div>
             )}
 
             {activeTab === "print" && (
@@ -807,13 +810,15 @@ export default function BirthdayWizard() {
               )}
             </Card>
 
-            <SecondaryButton
-              onClick={() => setStep(2)}
-              isDark={isDark}
-              style={{ marginTop: "1rem", width: "100%" }}
-            >
-              ← Zurück zu den Ideen
-            </SecondaryButton>
+            <div className="no-print">
+              <SecondaryButton
+                onClick={() => setStep(2)}
+                isDark={isDark}
+                style={{ marginTop: "1rem", width: "100%" }}
+              >
+                ← Zurück zu den Ideen
+              </SecondaryButton>
+            </div>
           </div>
         )}
       </div>
