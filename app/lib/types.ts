@@ -1,6 +1,7 @@
 export interface Theme {
   id: string;
   emoji: string;
+  image?: string;
   label: string;
   primary: string;
   secondary: string;
