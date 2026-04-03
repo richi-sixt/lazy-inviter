@@ -2,6 +2,7 @@
 
 import { QRCodeSVG } from "qrcode.react";
 import type { Theme, FormData, IdeaData } from "../lib/types";
+import ThemeIcon from "./ThemeIcon";
 
 export default function PrintInvitation({
   form,
@@ -29,8 +30,8 @@ export default function PrintInvitation({
         textAlign: "center",
       }}
     >
-      <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>
-        {theme.emoji} ✨ {theme.emoji}
+      <div style={{ marginBottom: "0.5rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
+        <ThemeIcon theme={theme} size="2.5rem" /> <span style={{ fontSize: "2.5rem" }}>✨</span> <ThemeIcon theme={theme} size="2.5rem" />
       </div>
       <h1
         style={{

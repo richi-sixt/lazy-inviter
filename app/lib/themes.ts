@@ -4,6 +4,7 @@ export const THEMES: Theme[] = [
   {
     id: "einhorn",
     emoji: "🦄",
+    image: "/themes/einhorn.svg",
     label: "Einhorn",
     primary: "#e879a0",
     secondary: "#a78bfa",

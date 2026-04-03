@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { FormData, IdeaData, GuestInput, Theme } from "../lib/types";
 import { THEMES, DARK_THEME_IDS } from "../lib/themes";
+import ThemeIcon from "./ThemeIcon";
 import FloatingSymbols from "./FloatingSymbols";
 import StepIndicator from "./StepIndicator";
 import InvitationCard from "./InvitationCard";
@@ -263,8 +264,8 @@ export default function BirthdayWizard() {
                         boxShadow: sel ? `0 0 0 3px ${t.primary}30` : "none",
                       }}
                     >
-                      <div style={{ fontSize: "1.4rem", lineHeight: 1 }}>
-                        {t.emoji}
+                      <div style={{ lineHeight: 1 }}>
+                        <ThemeIcon theme={t} size="1.4rem" />
                       </div>
                       <div
                         style={{
@@ -399,11 +400,10 @@ export default function BirthdayWizard() {
               >
                 <div
                   style={{
-                    fontSize: "3.5rem",
                     animation: "float 1.8s ease-in-out infinite alternate",
                   }}
                 >
-                  {theme.emoji}
+                  <ThemeIcon theme={theme} size="3.5rem" />
                 </div>
                 <p
                   style={{

@@ -1,6 +1,7 @@
 "use client";
 
 import type { Theme, FormData, IdeaData } from "../lib/types";
+import ThemeIcon from "./ThemeIcon";
 
 export default function InvitationCard({
   form,
@@ -30,12 +31,11 @@ export default function InvitationCard({
     >
       <div
         style={{
-          fontSize: "3.5rem",
           marginBottom: "0.5rem",
           animation: "float 3s ease-in-out infinite alternate",
         }}
       >
-        {theme.emoji}
+        <ThemeIcon theme={theme} size="3.5rem" />
       </div>
       <p
         style={{
