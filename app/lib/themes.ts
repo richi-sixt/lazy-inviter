@@ -18,6 +18,7 @@ export const THEMES: Theme[] = [
   {
     id: "spiderman",
     emoji: "🕷️",
+    image: "/themes/spiderman.svg",
     label: "Spider-Man",
     primary: "#dc2626",
     secondary: "#1d4ed8",
