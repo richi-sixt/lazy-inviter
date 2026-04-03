@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import type { FormData, IdeaData, GuestInput, Theme } from "../lib/types";
 import { THEMES, DARK_THEME_IDS } from "../lib/themes";
 import ThemeIcon from "./ThemeIcon";
@@ -65,6 +65,46 @@ export default function BirthdayWizard() {
 
   // The ideas to display (edited version takes precedence)
   const displayIdeas = editedIdeas || ideas;
+
+  // ── PDF Export ────────────────────────────────────────────
+  const printRef = useRef<HTMLDivElement>(null);
+  const [exporting, setExporting] = useState(false);
+
+  const handleExportPdf = useCallback(async () => {
+    const el = printRef.current;
+    if (!el) return;
+    setExporting(true);
+    try {
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import("html2canvas-pro"),
+        import("jspdf"),
+      ]);
+      // A5 dimensions in mm
+      const a5W = 148;
+      const a5H = 210;
+      const canvas = await html2canvas(el, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a5" });
+      // Fit the captured image into A5 with some margin
+      const margin = 4;
+      const pdfW = a5W - margin * 2;
+      const pdfH = (canvas.height / canvas.width) * pdfW;
+      const finalH = Math.min(pdfH, a5H - margin * 2);
+      const finalW = pdfH > a5H - margin * 2 ? (canvas.width / canvas.height) * finalH : pdfW;
+      const x = (a5W - finalW) / 2;
+      const y = (a5H - finalH) / 2;
+      pdf.addImage(imgData, "PNG", x, y, finalW, finalH);
+      pdf.save(`einladung-${form.childName.toLowerCase().replace(/\s+/g, "-")}.pdf`);
+    } catch (e) {
+      console.error("PDF export failed:", e);
+    } finally {
+      setExporting(false);
+    }
+  }, [form.childName]);
 
   // ── Helpers for editing ideas ──────────────────────────────
   const updateIdea = (key: keyof IdeaData, value: string | string[]) => {
@@ -740,17 +780,28 @@ export default function BirthdayWizard() {
                     💡 <strong>Tipp:</strong> Auf A5 drucken oder A4 falten.
                     «Hintergrundgrafiken» im Druckdialog aktivieren.
                   </p>
-                  <PrimaryButton theme={theme} onClick={() => window.print()}>
-                    🖨️ Jetzt drucken
-                  </PrimaryButton>
+                  <div style={{ display: "flex", gap: "0.75rem" }}>
+                    <PrimaryButton theme={theme} onClick={() => window.print()}>
+                      🖨️ Jetzt drucken
+                    </PrimaryButton>
+                    <PrimaryButton
+                      theme={theme}
+                      onClick={handleExportPdf}
+                      style={{ background: isDark ? "rgba(255,255,255,0.12)" : "#f3f4f6", color: theme.primary }}
+                    >
+                      {exporting ? "⏳ Exportiere…" : "📄 Als PDF exportieren"}
+                    </PrimaryButton>
+                  </div>
                 </Card>
-                <PrintInvitation
-                  form={form}
-                  ideas={displayIdeas}
-                  theme={theme}
-                  formatDate={formatDate}
-                  shareUrl={shareUrl || undefined}
-                />
+                <div ref={printRef}>
+                  <PrintInvitation
+                    form={form}
+                    ideas={displayIdeas}
+                    theme={theme}
+                    formatDate={formatDate}
+                    shareUrl={shareUrl || undefined}
+                  />
+                </div>
               </>
             )}
 
