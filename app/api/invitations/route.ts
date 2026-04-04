@@ -1,5 +1,57 @@
 import { nanoid } from "nanoid";
 import { createServiceClient } from "../../lib/supabase";
+import type { InvitationWithCounts } from "../../lib/types";
+
+// ── GET: List all invitations with guest counts ────────
+
+export async function GET() {
+  try {
+    const supabase = createServiceClient();
+
+    const { data: invitations, error } = await supabase
+      .from("invitations")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("List invitations error:", error);
+      return Response.json(
+        { error: "Failed to list invitations" },
+        { status: 500 }
+      );
+    }
+
+    // Fetch guest counts per invitation
+    const results: InvitationWithCounts[] = await Promise.all(
+      (invitations || []).map(async (inv) => {
+        const { data: guests } = await supabase
+          .from("guests")
+          .select("status")
+          .eq("invitation_id", inv.id);
+
+        const g = guests || [];
+        return {
+          ...inv,
+          guest_count: g.length,
+          accepted_count: g.filter((x) => x.status === "accepted").length,
+          declined_count: g.filter((x) => x.status === "declined").length,
+          maybe_count: g.filter((x) => x.status === "maybe").length,
+          pending_count: g.filter((x) => x.status === "pending").length,
+        };
+      })
+    );
+
+    return Response.json(results);
+  } catch (err) {
+    console.error("List invitations error:", err);
+    return Response.json(
+      { error: "Failed to list invitations" },
+      { status: 500 }
+    );
+  }
+}
+
+// ── POST: Create new invitation ────────────────────────
 
 export async function POST(request: Request) {
   try {

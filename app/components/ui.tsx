@@ -19,6 +19,7 @@ export function Card({
       className="no-print"
       style={{
         background: theme.cardBg,
+        color: isDark ? "#e2e8f0" : "#1e293b",
         borderRadius: "1.5rem",
         padding: "1.75rem",
         boxShadow: isDark

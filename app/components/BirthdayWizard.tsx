@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import type { FormData, IdeaData, GuestInput, Theme } from "../lib/types";
 import { THEMES, DARK_THEME_IDS } from "../lib/themes";
 import ThemeIcon from "./ThemeIcon";
@@ -20,16 +21,7 @@ import {
   InfoPill,
   ErrorBanner,
 } from "./ui";
-
-function formatDate(s: string): string {
-  if (!s) return "";
-  return new Date(s).toLocaleDateString("de-CH", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
+import { formatDate } from "../lib/format";
 
 export default function BirthdayWizard() {
   const [step, setStep] = useState(1);
@@ -43,6 +35,8 @@ export default function BirthdayWizard() {
   const [guests, setGuests] = useState<GuestInput[]>([]);
   const [saving, setSaving] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [savedToken, setSavedToken] = useState<string | null>(null);
+  const router = useRouter();
 
   const [form, setForm] = useState<FormData>({
     childName: "Luna",
@@ -193,6 +187,7 @@ export default function BirthdayWizard() {
 
       const data = await res.json();
       setShareUrl(data.url);
+      setSavedToken(data.token);
     } catch {
       setError("Fehler beim Speichern. Bitte versuche es erneut.");
     }
@@ -828,7 +823,18 @@ export default function BirthdayWizard() {
               style={{ marginTop: "1rem" }}
             >
               {shareUrl ? (
-                <ShareSection url={shareUrl} theme={theme} isDark={isDark} />
+                <>
+                  <ShareSection url={shareUrl} theme={theme} isDark={isDark} />
+                  {savedToken && (
+                    <PrimaryButton
+                      theme={theme}
+                      onClick={() => router.push(`/project/${savedToken}`)}
+                      style={{ marginTop: "1rem" }}
+                    >
+                      📋 Zum Projekt →
+                    </PrimaryButton>
+                  )}
+                </>
               ) : (
                 <>
                   <SectionTitle theme={theme}>

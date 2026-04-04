@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Theme } from "../lib/types";
 
 export default function ThemeIcon({
@@ -13,12 +14,15 @@ export default function ThemeIcon({
   style?: React.CSSProperties;
   className?: string;
 }) {
-  if (theme.image) {
+  const [imgError, setImgError] = useState(false);
+
+  if (theme.image && !imgError) {
     return (
       <img
         src={theme.image}
         alt={theme.label}
         className={className}
+        onError={() => setImgError(true)}
         style={{
           width: size,
           height: size,
