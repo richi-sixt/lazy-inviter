@@ -7,6 +7,7 @@ CREATE TABLE invitations (
   form_data JSONB NOT NULL,
   ideas_data JSONB NOT NULL,
   theme_id TEXT NOT NULL,
+  archived BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now()
 );
@@ -44,3 +45,23 @@ CREATE POLICY "anon_update_guests" ON guests
   WITH CHECK (true);
 
 -- Service role bypasses RLS automatically
+
+-- ── Phase 2: To-Do Lists ────────────────────────────────
+
+CREATE TABLE todos (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  invitation_id UUID REFERENCES invitations(id) ON DELETE CASCADE NOT NULL,
+  title TEXT NOT NULL,
+  due_date DATE,
+  completed BOOLEAN DEFAULT false,
+  ai_generated BOOLEAN DEFAULT false,
+  sort_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_todos_invitation ON todos(invitation_id);
+
+ALTER TABLE todos ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "anon_select_todos" ON todos
+  FOR SELECT USING (true);
