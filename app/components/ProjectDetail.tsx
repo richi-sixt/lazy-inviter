@@ -7,6 +7,8 @@ import { formatDate } from "../lib/format";
 import FloatingSymbols from "./FloatingSymbols";
 import InvitationCard from "./InvitationCard";
 import PrintInvitation from "./PrintInvitation";
+import CoverPage from "./CoverPage";
+import { exportPdfA5 } from "../lib/exportPdf";
 import { EditableText, EditableList } from "./EditableField";
 import GuestListManager from "./GuestListManager";
 import ShareSection from "./ShareSection";
@@ -48,6 +50,7 @@ export default function ProjectDetail({
 
   // PDF export
   const printRef = useRef<HTMLDivElement>(null);
+  const coverRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
 
   const hasChanges =
@@ -83,32 +86,15 @@ export default function ProjectDetail({
   };
 
   const handleExportPdf = useCallback(async () => {
-    const el = printRef.current;
-    if (!el) return;
+    const coverEl = coverRef.current;
+    const inviteEl = printRef.current;
+    if (!coverEl || !inviteEl) return;
     setExporting(true);
     try {
-      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
-        import("html2canvas-pro"),
-        import("jspdf"),
-      ]);
-      const a5W = 148;
-      const a5H = 210;
-      const canvas = await html2canvas(el, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-      });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a5" });
-      const margin = 4;
-      const pdfW = a5W - margin * 2;
-      const pdfH = (canvas.height / canvas.width) * pdfW;
-      const finalH = Math.min(pdfH, a5H - margin * 2);
-      const finalW = pdfH > a5H - margin * 2 ? (canvas.width / canvas.height) * finalH : pdfW;
-      const x = (a5W - finalW) / 2;
-      const y = (a5H - finalH) / 2;
-      pdf.addImage(imgData, "PNG", x, y, finalW, finalH);
-      pdf.save(`einladung-${editForm.childName.toLowerCase().replace(/\s+/g, "-")}.pdf`);
+      await exportPdfA5(
+        [coverEl, inviteEl],
+        `einladung-${editForm.childName.toLowerCase().replace(/\s+/g, "-")}.pdf`
+      );
     } catch (e) {
       console.error("PDF export failed:", e);
     } finally {
@@ -385,9 +371,12 @@ export default function ProjectDetail({
           )}
         </Card>
 
-        {/* Hidden print component for PDF export */}
+        {/* Hidden print components for PDF export */}
         {showPreview && (
           <div style={{ position: "absolute", left: "-9999px", top: 0 }}>
+            <div ref={coverRef}>
+              <CoverPage form={editForm} theme={theme} />
+            </div>
             <div ref={printRef}>
               <PrintInvitation
                 form={editForm}

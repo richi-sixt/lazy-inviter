@@ -23,7 +23,7 @@ print-ready PDFs.
 | **AI Ideas** | Claude generates tagline, invitation text, decorations, activities, food, and dress code suggestions |
 | **Editable Sections** | Click any AI-generated text to override it before finalizing |
 | **Guest List** | Add guests with phone numbers for RSVP matching |
-| **Shareable Link + QR** | Save the invitation to get a unique URL and downloadable QR code |
+| **Shareable Link + QR** | Save the invitation to get a unique URL (add `?guest=Name` to the URL for individual invitation text) and downloadable QR code |
 | **Phone RSVP** | Guests open the link, enter their phone number, and respond (accepted/declined/maybe) |
 | **Print Version** | A5-optimized print layout with QR code, ready to fold or send |
 | **Password Gate** | Only the organizer can access the wizard; guest links bypass auth |

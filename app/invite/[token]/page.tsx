@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { createClient } from "../../lib/supabase";
 import { THEMES } from "../../lib/themes";
@@ -30,11 +31,13 @@ export default async function InvitePage({
   const theme = THEMES.find((t) => t.id === invitation.theme_id) || THEMES[0];
 
   return (
-    <InviteClient
-      token={token}
-      formData={invitation.form_data}
-      ideasData={invitation.ideas_data}
-      theme={theme}
-    />
+    <Suspense>
+      <InviteClient
+        token={token}
+        formData={invitation.form_data}
+        ideasData={invitation.ideas_data}
+        theme={theme}
+      />
+    </Suspense>
   );
 }

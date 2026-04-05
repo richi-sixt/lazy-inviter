@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Theme, FormData, IdeaData } from "../../lib/types";
 import { DARK_THEME_IDS } from "../../lib/themes";
-import InvitationCard from "../../components/InvitationCard";
+import CoverPage from "../../components/CoverPage";
+import PrintInvitation from "../../components/PrintInvitation";
 import FloatingSymbols from "../../components/FloatingSymbols";
 
 function formatDate(s: string): string {
@@ -28,6 +30,8 @@ export default function InviteClient({
   theme: Theme;
 }) {
   const isDark = DARK_THEME_IDS.includes(theme.id);
+  const searchParams = useSearchParams();
+  const guestName = searchParams.get("guest") || undefined;
 
   const [phone, setPhone] = useState("");
   const [status, setStatus] = useState<"accepted" | "declined" | "maybe">(
@@ -90,13 +94,17 @@ export default function InviteClient({
           zIndex: 1,
         }}
       >
-        {/* Invitation Card */}
-        <InvitationCard
+        {/* Cover Page */}
+        <CoverPage form={formData} theme={theme} guestName={guestName} />
+
+        <div style={{ height: "1.5rem" }} />
+
+        {/* Invitation */}
+        <PrintInvitation
           form={formData}
           ideas={ideasData}
           theme={theme}
           formatDate={formatDate}
-          isDark={isDark}
         />
 
         {/* RSVP Section */}
