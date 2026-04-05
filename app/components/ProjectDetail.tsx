@@ -359,12 +359,9 @@ export default function ProjectDetail({
                 isDark={isDark}
               />
 
-              <div style={{ display: "flex", gap: "0.75rem", marginTop: "1rem" }}>
-                <SecondaryButton isDark={isDark} onClick={() => window.print()}>
-                  🖨️ Drucken
-                </SecondaryButton>
+              <div style={{ marginTop: "1rem" }}>
                 <SecondaryButton isDark={isDark} onClick={handleExportPdf}>
-                  {exporting ? "⏳ …" : "📄 PDF"}
+                  {exporting ? "⏳ …" : "📄 PDF exportieren"}
                 </SecondaryButton>
               </div>
             </div>
@@ -373,7 +370,7 @@ export default function ProjectDetail({
 
         {/* Hidden print components for PDF export */}
         {showPreview && (
-          <div style={{ position: "absolute", left: "-9999px", top: 0 }}>
+          <div style={{ position: "absolute", left: "-9999px", top: 0, width: 500 }}>
             <div ref={coverRef}>
               <CoverPage form={editForm} theme={theme} />
             </div>

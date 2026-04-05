@@ -16,7 +16,9 @@ export default function CoverPage({
     <div
       className="cover-page"
       style={{
-        maxWidth: 500,
+        width: 500,
+        maxWidth: "100%",
+        aspectRatio: "148 / 210",
         margin: "0 auto",
         background: "white",
         borderRadius: "1rem",
@@ -28,7 +30,7 @@ export default function CoverPage({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: 600,
+        boxSizing: "border-box",
       }}
     >
       <div style={{ marginBottom: "2.5rem" }}>

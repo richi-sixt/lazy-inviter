@@ -756,21 +756,11 @@ export default function BirthdayWizard() {
                       marginBottom: "1rem",
                     }}
                   >
-                    💡 <strong>Tipp:</strong> Auf A5 drucken oder A4 falten.
-                    «Hintergrundgrafiken» im Druckdialog aktivieren.
+                    💡 <strong>Tipp:</strong> PDF auf A5 drucken oder A4 falten.
                   </p>
-                  <div style={{ display: "flex", gap: "0.75rem" }}>
-                    <PrimaryButton theme={theme} onClick={() => window.print()}>
-                      🖨️ Jetzt drucken
-                    </PrimaryButton>
-                    <PrimaryButton
-                      theme={theme}
-                      onClick={handleExportPdf}
-                      style={{ background: isDark ? "rgba(255,255,255,0.12)" : "#f3f4f6", color: theme.primary }}
-                    >
-                      {exporting ? "⏳ Exportiere…" : "📄 Als PDF exportieren"}
-                    </PrimaryButton>
-                  </div>
+                  <PrimaryButton theme={theme} onClick={handleExportPdf}>
+                    {exporting ? "⏳ Exportiere…" : "📄 Als PDF exportieren"}
+                  </PrimaryButton>
                 </Card>
                 <div ref={coverRef}>
                   <CoverPage form={form} theme={theme} />
