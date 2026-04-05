@@ -1,6 +1,19 @@
 # Lazy Inviter
 
-A birthday party invitation generator with AI-powered ideas, themed designs, shareable links with QR codes, and phone-based RSVP. Built for families planning kids' birthday parties. Labels are in German.
+**Lazy Inviter** is a web app for creating personalised
+children's birthday party invitations. You pick a theme
+(Unicorn, Spider-Man, Dinosaur, …), fill in the party
+details, and let Claude AI generate a creative invitation
+text, decoration ideas, activity suggestions, and a dress
+code — all in German (Swiss context). The app then produces
+a shareable link with QR code so guests can RSVP by phone
+number.
+
+Beyond creation, an organizer dashboard lets you manage
+multiple invitations, track RSVP status, edit all fields
+inline, manage to-do lists (with AI-generated task
+suggestions), archive old invitations, and export
+print-ready PDFs.
 
 ## What It Does
 
@@ -17,12 +30,19 @@ A birthday party invitation generator with AI-powered ideas, themed designs, sha
 
 ## Tech Stack
 
-- **Next.js 16** (App Router, SSR, Proxy)
-- **React 19** with TypeScript
-- **Tailwind CSS v4**
-- **Supabase** (Postgres) for invitation & guest persistence
-- **Anthropic Claude API** for AI-generated party ideas
-- **qrcode.react** for QR code generation
+
+| Technology | What it does here | Learn more |
+|---|---|---|
+| **Next.js 16** (App Router) | Framework — file-based routing, server components, API routes | 📖 [Next.js docs](https://nextjs.org/docs) |
+| **React 19** | UI library — components, hooks, state management | 📖 [React docs](https://react.dev) |
+| **TypeScript 5** | Type safety across the entire codebase | 📖 [TypeScript handbook](https://www.typescriptlang.org/docs/) |
+| **Supabase** (Postgres) | Database, Row Level Security, anon + service clients | 📖 [Supabase docs](https://supabase.com/docs) |
+| **Claude API** (Anthropic) | AI-generated invitation text, party ideas, and to-do tasks | 📖 [Anthropic API docs](https://docs.anthropic.com) |
+| **html2canvas-pro** + **jsPDF** | Client-side DOM → Canvas → PDF export | 📖 [jsPDF docs](https://artskydj.github.io/jsPDF/docs/) |
+| **qrcode.react** | QR code SVG generation for shareable links | 📖 [qrcode.react](https://github.com/zpao/qrcode.react) |
+| **nanoid** | Generates short, URL-safe unique tokens for invitations | 📖 [nanoid](https://github.com/ai/nanoid) |
+| **Tailwind CSS 4** | Minimal usage — mainly imports; styling is inline | 📖 [Tailwind docs](https://tailwindcss.com/docs) |
+
 
 ## Getting Started
 
@@ -62,25 +82,4 @@ next start -p 3001
 # SSL via Certbot
 ```
 
-## Ideas and To-Dos
 
-- [x] ~~AI-generated party ideas~~ ✓
-- [x] ~~8 themed invitation designs~~ ✓
-- [x] ~~Editable AI sections~~ ✓
-- [x] ~~Password-protected access~~ ✓
-- [x] ~~Shareable links with QR codes~~ ✓
-- [x] ~~Phone-based RSVP~~ ✓
-- [x] ~~Print version (A5)~~ ✓
-- [x] ~~Rate limiting~~ ✓
-- [ ] Organizer dashboard with all invitations
-- [ ] Per-project to-do lists
-- [ ] Multi-project support
-- [ ] Multi-language support
-- [ ] SMS/WhatsApp reminders
-
-## Resources
-
-- [Next.js 16 Docs](https://nextjs.org/docs) — framework documentation
-- [Supabase Docs](https://supabase.com/docs) — database & auth
-- [Anthropic API](https://docs.anthropic.com) — Claude API reference
-- [VISION.md](./VISION.md) — full future roadmap
